@@ -1,13 +1,12 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Link } from 'react-router-dom'; // 引入 Link 用於分頁跳轉
-import { Mail, ChevronDown, ChevronLeft, ChevronRight, ChevronRight as ArrowRightIcon } from 'lucide-react';
+import { Link, useSearchParams } from 'react-router-dom';
+import { Mail, ChevronDown, ChevronLeft, ChevronRight, ChevronRight as ArrowRightIcon, Cpu } from 'lucide-react';
 
-// --- 輪播組件 (修正路徑以符合 src/pages 目錄結構) ---
+// --- 輪播組件 ---
 const ProductCarousel = ({ folder }) => {
   const [index, setIndex] = useState(0);
   
-  // 因為檔案在 src/pages/，圖片在 src/assets/，所以要用 ../assets
   const images = [
     new URL(`../assets/${folder}/1.jpg`, import.meta.url).href,
     new URL(`../assets/${folder}/2.jpg`, import.meta.url).href,
@@ -26,7 +25,7 @@ const ProductCarousel = ({ folder }) => {
   const prevStep = () => setIndex((prev) => (prev - 1 + images.length) % images.length);
 
   return (
-    <div className="relative w-full aspect-[4/5] md:aspect-square group overflow-hidden rounded-2xl bg-gray-50 shadow-inner">
+    <div className="relative w-full aspect-[4/5] md:aspect-square group overflow-hidden rounded-[2rem] bg-gray-50 shadow-inner border border-gray-100">
       <AnimatePresence mode="wait">
         <motion.img
           key={index}
@@ -59,11 +58,11 @@ const ProductCarousel = ({ folder }) => {
         <ChevronRight size={24} />
       </button>
 
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
         {images.map((_, i) => (
           <div 
             key={i} 
-            className={`h-1.5 transition-all rounded-full ${i === index ? 'w-6 bg-[#FF6B00]' : 'w-1.5 bg-white/50'}`}
+            className={`h-1 transition-all rounded-full ${i === index ? 'w-6 bg-[#FF6B00]' : 'w-1.5 bg-black/20'}`}
           />
         ))}
       </div>
@@ -72,6 +71,21 @@ const ProductCarousel = ({ folder }) => {
 };
 
 const HomePage = () => {
+  const [searchParams] = useSearchParams();
+
+  // 處理導覽列跨頁跳轉後的捲動
+  useEffect(() => {
+    const scrollToId = searchParams.get('scroll');
+    if (scrollToId) {
+      setTimeout(() => {
+        const element = document.getElementById(scrollToId);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100); // 稍微延遲確保組件已掛載
+    }
+  }, [searchParams]);
+
   const fadeInUp = {
     initial: { opacity: 0, y: 30 },
     whileInView: { opacity: 1, y: 0 },
@@ -160,8 +174,8 @@ const HomePage = () => {
             <div className="w-16 md:w-20 h-1.5 bg-[#FF6B00] mx-auto"></div>
           </motion.div>
 
-          {/* GO EAT */}
-          <div className="flex flex-col md:flex-row items-center gap-10 md:gap-20 mb-32 md:mb-48">
+          {/* GO EAT Section */}
+          <section id="go-eat" className="flex flex-col md:flex-row items-center gap-10 md:gap-20 mb-32 md:mb-48 scroll-mt-32">
             <motion.div {...fadeInUp} className="w-full md:flex-1 space-y-6">
               <span className="text-[#FF6B00] font-bold tracking-widest text-xs md:text-sm uppercase">F&B Management</span>
               <h3 className="text-4xl md:text-5xl font-black">GO EAT | 饗導</h3>
@@ -169,7 +183,6 @@ const HomePage = () => {
                 專為餐飲與行銷設計的系統。我們重新定義經營邏輯，解決客源來源問題，讓美味透過配對精準傳遞。
               </p>
               <div className="flex pt-2">
-                {/* 修改點：改用 Link 跳轉到內部分頁 */}
                 <Link 
                   to="/go-eat" 
                   className="w-full md:w-auto text-center bg-[#1A1A1A] text-white px-10 py-5 rounded-full font-bold flex items-center justify-center hover:bg-[#FF6B00] transition-all"
@@ -181,10 +194,10 @@ const HomePage = () => {
             <motion.div {...fadeInUp} className="w-full md:flex-1">
               <ProductCarousel folder="goeat" />
             </motion.div>
-          </div>
+          </section>
 
-          {/* GO PRIME */}
-          <div className="flex flex-col-reverse md:flex-row items-center gap-10 md:gap-20 mb-32 md:mb-48">
+          {/* GO PRIME Section */}
+          <section id="go-prime" className="flex flex-col-reverse md:flex-row items-center gap-10 md:gap-20 mb-32 md:mb-48 scroll-mt-32">
             <motion.div {...fadeInUp} className="w-full md:flex-1">
               <ProductCarousel folder="goprime" />
             </motion.div>
@@ -198,10 +211,10 @@ const HomePage = () => {
                 <span className="inline-block bg-gray-100 text-gray-400 px-6 py-2 rounded-full font-bold uppercase text-xs tracking-widest">In Development</span>
               </div>
             </motion.div>
-          </div>
+          </section>
 
-          {/* GO SOUL */}
-          <div className="flex flex-col md:flex-row items-center gap-10 md:gap-20 mb-10">
+          {/* GO SOUL Section */}
+          <section id="go-soul" className="flex flex-col md:flex-row items-center gap-10 md:gap-20 mb-32 md:mb-48 scroll-mt-32">
             <motion.div {...fadeInUp} className="w-full md:flex-1 space-y-6">
               <span className="text-[#FF6B00] font-bold tracking-widest text-xs md:text-sm uppercase">Digital Soul</span>
               <h3 className="text-4xl md:text-5xl font-black">GO SOUL | 靈魂</h3>
@@ -215,7 +228,29 @@ const HomePage = () => {
             <motion.div {...fadeInUp} className="w-full md:flex-1">
               <ProductCarousel folder="gosoul" />
             </motion.div>
-          </div>
+          </section>
+
+          {/* GO CORE Section - Token & API */}
+          <section id="go-core" className="flex flex-col-reverse md:flex-row items-center gap-10 md:gap-20 mb-10 scroll-mt-32">
+            <motion.div {...fadeInUp} className="w-full md:flex-1">
+              <ProductCarousel folder="gocore" />
+            </motion.div>
+            <motion.div {...fadeInUp} className="w-full md:flex-1 space-y-6">
+              <span className="text-[#4F46E5] font-bold tracking-widest text-xs md:text-sm uppercase">Developer Ecosystem</span>
+              <h3 className="text-4xl md:text-5xl font-black">GO CORE | 核心</h3>
+              <p className="text-lg md:text-xl text-gray-500 leading-relaxed font-light">
+                透過 GO CORE Token 釋放 AI 的無限潛能。這是驅動所有自動化工具與智慧應用的燃料，專為開發者與企業打造的強大 API 服務。
+              </p>
+              <div className="flex pt-4">
+                <Link 
+                  to="/go-core" 
+                  className="w-full md:w-auto text-center bg-[#4F46E5] text-white px-10 py-5 rounded-full font-bold flex items-center justify-center hover:shadow-[0_0_20px_rgba(79,70,229,0.3)] transition-all"
+                >
+                  進入主站與購買 <Cpu size={18} className="ml-2" />
+                </Link>
+              </div>
+            </motion.div>
+          </section>
         </div>
       </section>
 
@@ -266,4 +301,4 @@ const HomePage = () => {
   );
 }
 
-export default HomePage; // 匯出名為 HomePage 的組件
+export default HomePage;

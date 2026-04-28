@@ -1,8 +1,10 @@
-import { Routes, Route, Link, useLocation } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
+import Navbar from './components/Navbar'; // 確保路徑正確
 import HomePage from './pages/HomePage';
 import GoEatPage from './pages/GoEatPage';
+import GoCorePage from './pages/GoCorePage';
 
 function App() {
   const location = useLocation();
@@ -13,12 +15,19 @@ function App() {
   }, [location]);
 
   return (
-    <AnimatePresence mode="wait">
-      <Routes location={location} key={location.pathname}>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/go-eat" element={<GoEatPage />} />
-      </Routes>
-    </AnimatePresence>
+    <>
+      {/* 1. Navbar 放在這裡，確保它在所有頁面頂端，且不參與頁面切換動畫 */}
+      <Navbar />
+
+      {/* 2. 頁面切換動畫容器 */}
+      <AnimatePresence mode="wait">
+        <Routes location={location} key={location.pathname}>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/go-eat" element={<GoEatPage />} />
+          <Route path="/go-core" element={<GoCorePage />} />
+        </Routes>
+      </AnimatePresence>
+    </>
   );
 }
 
