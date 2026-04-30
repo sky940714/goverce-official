@@ -5,6 +5,8 @@ import Navbar from './components/Navbar'; // 確保路徑正確
 import HomePage from './pages/HomePage';
 import GoEatPage from './pages/GoEatPage';
 import GoCorePage from './pages/GoCorePage';
+import LoginPage from './pages/login/LoginPage';
+import RegisterPage from './pages/login/RegisterPage';
 
 function App() {
   const location = useLocation();
@@ -25,6 +27,8 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/go-eat" element={<GoEatPage />} />
           <Route path="/go-core" element={<GoCorePage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} /> 
         </Routes>
       </AnimatePresence>
     </>
