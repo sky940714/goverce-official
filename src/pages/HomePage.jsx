@@ -230,23 +230,23 @@ const HomePage = () => {
             </motion.div>
           </section>
 
-          {/* GO CORE Section - Token & API */}
+          {/* GO CORE Section - Token & API (已優化橘色版) */}
           <section id="go-core" className="flex flex-col-reverse md:flex-row items-center gap-10 md:gap-20 mb-10 scroll-mt-32">
             <motion.div {...fadeInUp} className="w-full md:flex-1">
               <ProductCarousel folder="gocore" />
             </motion.div>
             <motion.div {...fadeInUp} className="w-full md:flex-1 space-y-6">
-              <span className="text-[#4F46E5] font-bold tracking-widest text-xs md:text-sm uppercase">Developer Ecosystem</span>
+              <span className="text-[#FF6B00] font-bold tracking-widest text-xs md:text-sm uppercase">Developer Ecosystem</span>
               <h3 className="text-4xl md:text-5xl font-black">GO CORE | 核心</h3>
               <p className="text-lg md:text-xl text-gray-500 leading-relaxed font-light">
-                透過 GO CORE Token 釋放 AI 的無限潛能。這是驅動所有自動化工具與智慧應用的燃料，專為開發者與企業打造的強大 API 服務。
+                拒絕訂閱制浪費！透過 GO CORE Token 釋放 AI 的無限潛能。這是為工程師與企業設計的強大 API 服務，用多少算多少，讓開發更純粹。
               </p>
               <div className="flex pt-4">
                 <Link 
                   to="/go-core" 
-                  className="w-full md:w-auto text-center bg-[#4F46E5] text-white px-10 py-5 rounded-full font-bold flex items-center justify-center hover:shadow-[0_0_20px_rgba(79,70,229,0.3)] transition-all"
+                  className="w-full md:w-auto text-center bg-[#FF6B00] text-white px-10 py-5 rounded-full font-bold flex items-center justify-center hover:shadow-[0_0_20px_rgba(255,107,0,0.3)] hover:scale-105 transition-all"
                 >
-                  進入主站與購買 <Cpu size={18} className="ml-2" />
+                  進入主站與方案計算 <Cpu size={18} className="ml-2" />
                 </Link>
               </div>
             </motion.div>
