@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Menu, X, ChevronRight, LogOut, Wallet } from 'lucide-react';
+import { Menu, X, ChevronRight, LogOut, Wallet, MessageCircle } from 'lucide-react';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -10,16 +10,15 @@ const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // 判斷當前是否在 GO CORE 頁面
   const isGoCorePage = location.pathname === '/go-core';
+  const CONSOLE_LOGIN_URL = "https://me.goverce.com/login";
+  const LINE_URL = "https://lin.ee/NOt2H1p"; // 您的官方 LINE 連結
 
-  // 1. 偵測登入狀態
   useEffect(() => {
     const token = localStorage.getItem('goverce_token');
     setIsLoggedIn(!!token);
   }, [location]);
 
-  // 2. 處理登出
   const handleLogout = () => {
     localStorage.removeItem('goverce_token');
     localStorage.removeItem('user_email');
@@ -85,45 +84,60 @@ const Navbar = () => {
             ))}
           </div>
 
-          {/* 只在 GO CORE 頁面顯示 Auth 按鈕或錢包 */}
-          {isGoCorePage && (
-            <motion.div 
-              initial={{ opacity: 0, x: 10 }}
-              animate={{ opacity: 1, x: 0 }}
-              className="flex items-center gap-5"
+          {/* 右側功能區：包含 LINE 與 Auth */}
+          <div className="flex items-center gap-5">
+            {/* 官方 LINE 連結 (桌面版) */}
+            <motion.a
+              href={LINE_URL}
+              target="_blank"
+              rel="noreferrer"
+              animate={{ scale: [1, 1.05, 1] }}
+              transition={{ repeat: Infinity, duration: 2 }}
+              className="flex items-center gap-2 px-4 py-1.5 rounded-full border border-[#FF6B00]/30 text-[#FF6B00] text-[11px] font-black tracking-widest hover:bg-[#FF6B00] hover:text-white transition-all shadow-sm"
             >
-              {!isLoggedIn ? (
-                <>
-                  <Link 
-                    to="/login" 
-                    className="text-sm font-black tracking-widest text-gray-900 hover:text-[#FF6B00] transition-colors"
-                  >
-                    LOGIN
-                  </Link>
-                  <Link 
-                    to="/register" 
-                    className="bg-black text-white px-7 py-2.5 rounded-full text-[11px] font-black tracking-[0.2em] hover:bg-[#FF6B00] transition-all shadow-xl shadow-gray-200 active:scale-95"
-                  >
-                    REGISTER
-                  </Link>
-                </>
-              ) : (
-                <div className="flex items-center gap-4">
-                  <div className="flex items-center gap-2 bg-gray-50 px-4 py-2 rounded-full border border-gray-100 group">
-                    <Wallet size={16} className="text-[#FF6B00]" />
-                    <span className="text-[11px] font-black tracking-widest">1,000 <span className="text-gray-400 font-bold">PTS</span></span>
+              <MessageCircle size={14} />
+              OFFICIAL LINE
+            </motion.a>
+
+            {isGoCorePage && (
+              <motion.div 
+                initial={{ opacity: 0, x: 10 }}
+                animate={{ opacity: 1, x: 0 }}
+                className="flex items-center gap-5"
+              >
+                {!isLoggedIn ? (
+                  <>
+                    <a 
+                      href={CONSOLE_LOGIN_URL}
+                      className="text-sm font-black tracking-widest text-gray-900 hover:text-[#FF6B00] transition-colors"
+                    >
+                      LOGIN
+                    </a>
+                    <a 
+                      href={CONSOLE_LOGIN_URL} 
+                      className="bg-black text-white px-7 py-2.5 rounded-full text-[11px] font-black tracking-[0.2em] hover:bg-[#FF6B00] transition-all shadow-xl shadow-gray-200 active:scale-95"
+                    >
+                      REGISTER
+                    </a>
+                  </>
+                ) : (
+                  <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-2 bg-gray-50 px-4 py-2 rounded-full border border-gray-100 group">
+                      <Wallet size={16} className="text-[#FF6B00]" />
+                      <span className="text-[11px] font-black tracking-widest">1,000 <span className="text-gray-400 font-bold">PTS</span></span>
+                    </div>
+                    <button 
+                      onClick={handleLogout}
+                      className="p-2 text-gray-400 hover:text-red-500 transition-colors"
+                      title="安全登出"
+                    >
+                      <LogOut size={20} />
+                    </button>
                   </div>
-                  <button 
-                    onClick={handleLogout}
-                    className="p-2 text-gray-400 hover:text-red-500 transition-colors"
-                    title="安全登出"
-                  >
-                    <LogOut size={20} />
-                  </button>
-                </div>
-              )}
-            </motion.div>
-          )}
+                )}
+              </motion.div>
+            )}
+          </div>
         </div>
 
         {/* Mobile Toggle */}
@@ -144,6 +158,19 @@ const Navbar = () => {
             exit={{ opacity: 0, y: -20 }}
             className="absolute top-0 left-0 w-full h-screen bg-white z-[100] flex flex-col justify-center items-center px-10"
           >
+            {/* 官方 LINE 連結 (手機版置頂) */}
+            <motion.a
+              href={LINE_URL}
+              target="_blank"
+              rel="noreferrer"
+              initial={{ scale: 0.9 }}
+              animate={{ scale: 1 }}
+              className="mb-12 flex items-center gap-3 bg-[#06C755] text-white px-8 py-4 rounded-2xl font-black text-lg shadow-lg"
+            >
+              <MessageCircle size={24} />
+              私訊官方 LINE 領取額度
+            </motion.a>
+
             <div className="flex flex-col items-center gap-8 mb-12">
               {navLinks.map((link) => (
                 <button
@@ -156,7 +183,6 @@ const Navbar = () => {
               ))}
             </div>
 
-            {/* 手機版也同樣只在 GO CORE 頁面顯示登入選項 */}
             {isGoCorePage && (
               <motion.div 
                 initial={{ opacity: 0 }}
@@ -165,20 +191,20 @@ const Navbar = () => {
               >
                 {!isLoggedIn ? (
                   <>
-                    <Link 
-                      to="/register"
+                    <a 
+                      href={CONSOLE_LOGIN_URL}
                       onClick={() => setIsOpen(false)}
                       className="w-full py-5 bg-[#FF6B00] text-white rounded-2xl font-black text-xl flex items-center justify-center gap-2 shadow-2xl shadow-[#FF6B00]/20"
                     >
                       立即註冊 <ChevronRight />
-                    </Link>
-                    <Link 
-                      to="/login"
+                    </a>
+                    <a 
+                      href={CONSOLE_LOGIN_URL}
                       onClick={() => setIsOpen(false)}
                       className="w-full py-5 bg-gray-50 text-gray-900 rounded-2xl font-black text-xl flex items-center justify-center"
                     >
                       登入帳號
-                    </Link>
+                    </a>
                   </>
                 ) : (
                   <button 
