@@ -11,6 +11,12 @@ const GoSoulPage = () => {
   // 💡 定義你的官方 LINE 連結
   const LINE_URL = "https://lin.ee/NOt2H1p";
 
+  // 🚀 修復圖片路徑：使用 Vite 靜態資源引入方式
+  // 這會抓取 src/assets/marquee/ 下的 marquee-n1.jpg ~ marquee-n5.jpg
+  const marqueeImages = [1, 2, 3, 4, 5].map(num => 
+    new URL(`../assets/marquee/marquee-n${num}.jpg`, import.meta.url).href
+  );
+
   const fadeInUp = {
     initial: { opacity: 0, y: 30 },
     whileInView: { opacity: 1, y: 0 },
@@ -117,7 +123,7 @@ const GoSoulPage = () => {
           ))}
         </div>
 
-        {/* 跑馬燈 */}
+        {/* 跑馬燈：修正圖片引入 */}
         <div className="relative overflow-hidden py-8 md:py-10 bg-white border-y border-gray-100">
           <motion.div 
             initial={{ x: 0 }}
@@ -126,12 +132,13 @@ const GoSoulPage = () => {
             className="flex gap-4 md:gap-8 whitespace-nowrap"
             style={{ width: "fit-content" }}
           >
-            {[1, 2, 3, 4, 5, 1, 2, 3, 4, 5].map((num, i) => (
+            {/* 💡 這裡將 marqueeImages 複製兩份達成無縫滾動 */}
+            {[...marqueeImages, ...marqueeImages].map((imgUrl, i) => (
               <div key={i} className="w-[300px] md:w-[450px] h-[200px] md:h-[280px] flex-shrink-0 rounded-[1.5rem] md:rounded-[2.5rem] overflow-hidden shadow-lg border border-gray-100">
                 <img 
-                  src={`/assets/gosoul/marquee-n${num}.jpg`} 
+                  src={imgUrl} 
                   className="w-full h-full object-cover" 
-                  alt={`Scan Preview ${num}`} 
+                  alt={`Scan Preview ${i}`} 
                 />
               </div>
             ))}
