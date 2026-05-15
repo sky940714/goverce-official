@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Menu, X, ChevronRight, LogOut, Wallet, MessageCircle } from 'lucide-react';
+import { Menu, X, LogOut, Wallet, MessageCircle } from 'lucide-react';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -10,9 +10,12 @@ const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
+  // 💡 調整滾動後的背景顏色
+  const navBaseColor = "#1A1A1A"; 
+
   const isGoCorePage = location.pathname === '/go-core';
   const CONSOLE_LOGIN_URL = "https://me.goverce.com/login";
-  const LINE_URL = "https://lin.ee/NOt2H1p"; // 您的官方 LINE 連結
+  const LINE_URL = "https://lin.ee/NOt2H1p";
 
   useEffect(() => {
     const token = localStorage.getItem('goverce_token');
@@ -29,6 +32,7 @@ const Navbar = () => {
 
   useEffect(() => {
     const handleScroll = () => {
+      // 判斷滾動超過 50px 才觸發變色，符合 USPACE 體感
       setScrolled(window.scrollY > 50);
     };
     window.addEventListener('scroll', handleScroll);
@@ -37,6 +41,10 @@ const Navbar = () => {
 
   const handleNavClick = (id) => {
     setIsOpen(false);
+    if (id === 'line') {
+      window.open(LINE_URL, '_blank');
+      return;
+    }
     if (location.pathname !== '/') {
       navigate(`/?scroll=${id}`);
     } else {
@@ -48,174 +56,115 @@ const Navbar = () => {
   };
 
   const navLinks = [
-    { name: 'GO EAT', id: 'go-eat' },
-    { name: 'GO PRIME', id: 'go-prime' },
-    { name: 'GO SOUL', id: 'go-soul' },
-    { name: 'GO CORE', id: 'go-core' },
+    { name: 'GoEat', zh: '吃啥', id: 'go-eat' },
+    { name: 'GoPrime', zh: '美業配對', id: 'go-prime' },
+    { name: 'GoSoul', zh: '空間掃描', id: 'go-soul' },
+    { name: 'GoCore', zh: '一站式API', id: 'go-core' },
+    { name: '更多資訊', zh: 'INFO', id: 'footer' },
   ];
 
   return (
-    <nav className={`fixed top-0 w-full z-[100] transition-all duration-500 ${
-      scrolled ? 'py-4 bg-white/80 backdrop-blur-xl border-b border-gray-100' : 'py-6 bg-transparent'
-    }`}>
-      <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
+    <nav 
+      style={{ 
+        // 核心修改：在頂端時透明 (transparent)，下滑後變色
+        backgroundColor: scrolled ? navBaseColor : 'transparent',
+        backdropFilter: scrolled ? 'blur(20px)' : 'none'
+      }}
+      className={`fixed top-0 w-full z-[100] transition-all duration-500 ${
+        scrolled 
+          ? 'py-4 shadow-2xl border-b border-white/5' 
+          : 'py-10 border-b border-transparent'
+      }`}
+    >
+      <div className="max-w-[1600px] mx-auto px-10 flex justify-between items-center">
         
-        {/* Logo */}
         <Link to="/" className="z-[101]">
           <motion.h2 
-            className="text-2xl font-black italic tracking-tighter"
-            whileHover={{ scale: 1.05 }}
+            className="text-3xl md:text-4xl font-black italic tracking-tighter flex items-center gap-2 text-white"
+            whileHover={{ scale: 1.02 }}
           >
             GO<span className="text-[#FF6B00]">VERCE</span>
+            <span className="not-italic text-[10px] bg-[#FF6B00] text-white px-2 py-0.5 rounded font-bold tracking-widest uppercase">
+              Official
+            </span>
           </motion.h2>
         </Link>
 
-        {/* Desktop Links & Auth */}
-        <div className="hidden md:flex items-center gap-8">
-          <div className={`flex items-center gap-6 ${isGoCorePage ? 'pr-6 border-r border-gray-100' : ''}`}>
+        <div className="hidden lg:flex items-center gap-2">
+          <div className="flex items-center">
             {navLinks.map((link) => (
               <button
                 key={link.id}
                 onClick={() => handleNavClick(link.id)}
-                className="text-[13px] font-bold tracking-widest text-gray-400 hover:text-[#FF6B00] transition-colors"
+                className="group px-5 py-2 flex items-center transition-all"
               >
-                {link.name}
+                <span className="text-[17px] font-black tracking-tight text-white group-hover:text-[#FF6B00]">
+                  {link.name}
+                </span>
+                {/* 漸層分隔線優化 */}
+                <div className="mx-4 h-4 w-[1px] bg-gradient-to-b from-transparent via-white/20 to-transparent" />
+                <span className="text-[14px] font-medium text-gray-400 group-hover:text-white transition-colors">
+                  {link.zh}
+                </span>
               </button>
             ))}
-          </div>
 
-          {/* 右側功能區：包含 LINE 與 Auth */}
-          <div className="flex items-center gap-5">
-            {/* 官方 LINE 連結 (桌面版) */}
-            <motion.a
-              href={LINE_URL}
-              target="_blank"
-              rel="noreferrer"
-              animate={{ scale: [1, 1.05, 1] }}
-              transition={{ repeat: Infinity, duration: 2 }}
-              className="flex items-center gap-2 px-4 py-1.5 rounded-full border border-[#FF6B00]/30 text-[#FF6B00] text-[11px] font-black tracking-widest hover:bg-[#FF6B00] hover:text-white transition-all shadow-sm"
+            <button
+              onClick={() => handleNavClick('line')}
+              className="ml-8 flex items-center gap-3 px-8 py-3.5 rounded-full bg-[#06C755] text-white text-[15px] font-black tracking-widest hover:scale-105 transition-all shadow-xl shadow-[#06C755]/20"
             >
-              <MessageCircle size={14} />
-              OFFICIAL LINE
-            </motion.a>
-
-            {isGoCorePage && (
-              <motion.div 
-                initial={{ opacity: 0, x: 10 }}
-                animate={{ opacity: 1, x: 0 }}
-                className="flex items-center gap-5"
-              >
-                {!isLoggedIn ? (
-                  <>
-                    <a 
-                      href={CONSOLE_LOGIN_URL}
-                      className="text-sm font-black tracking-widest text-gray-900 hover:text-[#FF6B00] transition-colors"
-                    >
-                      LOGIN
-                    </a>
-                    <a 
-                      href={CONSOLE_LOGIN_URL} 
-                      className="bg-black text-white px-7 py-2.5 rounded-full text-[11px] font-black tracking-[0.2em] hover:bg-[#FF6B00] transition-all shadow-xl shadow-gray-200 active:scale-95"
-                    >
-                      REGISTER
-                    </a>
-                  </>
-                ) : (
-                  <div className="flex items-center gap-4">
-                    <div className="flex items-center gap-2 bg-gray-50 px-4 py-2 rounded-full border border-gray-100 group">
-                      <Wallet size={16} className="text-[#FF6B00]" />
-                      <span className="text-[11px] font-black tracking-widest">1,000 <span className="text-gray-400 font-bold">PTS</span></span>
-                    </div>
-                    <button 
-                      onClick={handleLogout}
-                      className="p-2 text-gray-400 hover:text-red-500 transition-colors"
-                      title="安全登出"
-                    >
-                      <LogOut size={20} />
-                    </button>
-                  </div>
-                )}
-              </motion.div>
-            )}
+              <MessageCircle size={20} fill="white" />
+              官方賴
+            </button>
           </div>
+
+          {isGoCorePage && (
+            <div className="flex items-center gap-6 ml-10 border-l border-white/10 pl-10">
+              {!isLoggedIn ? (
+                <a href={CONSOLE_LOGIN_URL} className="text-[15px] font-black text-white hover:text-[#FF6B00] transition-colors tracking-widest">
+                  LOGIN
+                </a>
+              ) : (
+                <div className="flex items-center gap-5 text-white">
+                  <div className="flex items-center gap-2 bg-white/5 px-5 py-2.5 rounded-2xl border border-white/10">
+                    <Wallet size={20} className="text-[#FF6B00]" />
+                    <span className="text-[14px] font-black tracking-widest">1,000 PTS</span>
+                  </div>
+                  <button onClick={handleLogout} className="p-2 text-gray-400 hover:text-red-500 transition-all">
+                    <LogOut size={24} />
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
-        {/* Mobile Toggle */}
-        <button 
-          className="md:hidden z-[101] p-2 text-black"
-          onClick={() => setIsOpen(!isOpen)}
-        >
-          {isOpen ? <X size={28} /> : <Menu size={28} />}
+        <button className="lg:hidden z-[101] p-3 text-white" onClick={() => setIsOpen(!isOpen)}>
+          {isOpen ? <X size={40} /> : <Menu size={40} />}
         </button>
       </div>
 
-      {/* Mobile Menu Overlay */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="absolute top-0 left-0 w-full h-screen bg-white z-[100] flex flex-col justify-center items-center px-10"
+            initial={{ opacity: 1, x: '100%' }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: '100%' }}
+            transition={{ type: 'spring', damping: 30 }}
+            className="fixed top-0 left-0 w-full h-screen bg-[#0A0A0A] z-[100] flex flex-col pt-40 px-12"
           >
-            {/* 官方 LINE 連結 (手機版置頂) */}
-            <motion.a
-              href={LINE_URL}
-              target="_blank"
-              rel="noreferrer"
-              initial={{ scale: 0.9 }}
-              animate={{ scale: 1 }}
-              className="mb-12 flex items-center gap-3 bg-[#06C755] text-white px-8 py-4 rounded-2xl font-black text-lg shadow-lg"
-            >
-              <MessageCircle size={24} />
-              私訊官方 LINE 領取額度
-            </motion.a>
-
-            <div className="flex flex-col items-center gap-8 mb-12">
+            <div className="flex flex-col gap-8">
               {navLinks.map((link) => (
                 <button
                   key={link.id}
                   onClick={() => handleNavClick(link.id)}
-                  className="text-4xl font-black italic tracking-tighter hover:text-[#FF6B00] transition-colors"
+                  className="flex items-center justify-between border-b border-white/5 pb-8"
                 >
-                  {link.name}
+                  <span className="text-5xl font-black italic text-white uppercase tracking-tighter">{link.name}</span>
+                  <span className="text-2xl font-bold text-[#FF6B00]">{link.zh}</span>
                 </button>
               ))}
             </div>
-
-            {isGoCorePage && (
-              <motion.div 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="w-full space-y-4 max-w-xs"
-              >
-                {!isLoggedIn ? (
-                  <>
-                    <a 
-                      href={CONSOLE_LOGIN_URL}
-                      onClick={() => setIsOpen(false)}
-                      className="w-full py-5 bg-[#FF6B00] text-white rounded-2xl font-black text-xl flex items-center justify-center gap-2 shadow-2xl shadow-[#FF6B00]/20"
-                    >
-                      立即註冊 <ChevronRight />
-                    </a>
-                    <a 
-                      href={CONSOLE_LOGIN_URL}
-                      onClick={() => setIsOpen(false)}
-                      className="w-full py-5 bg-gray-50 text-gray-900 rounded-2xl font-black text-xl flex items-center justify-center"
-                    >
-                      登入帳號
-                    </a>
-                  </>
-                ) : (
-                  <button 
-                    onClick={handleLogout}
-                    className="w-full py-5 bg-red-50 text-red-500 rounded-2xl font-black text-xl flex items-center justify-center gap-2"
-                  >
-                    <LogOut /> 安全登出
-                  </button>
-                )}
-              </motion.div>
-            )}
           </motion.div>
         )}
       </AnimatePresence>

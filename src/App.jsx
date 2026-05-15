@@ -7,6 +7,7 @@ import GoEatPage from './pages/GoEatPage';
 import GoCorePage from './pages/GoCorePage';
 import LoginPage from './pages/login/LoginPage';
 import RegisterPage from './pages/login/RegisterPage';
+import GoSoulPage from './pages/GoSoulPage';
 
 function App() {
   const location = useLocation();
@@ -28,7 +29,8 @@ function App() {
           <Route path="/go-eat" element={<GoEatPage />} />
           <Route path="/go-core" element={<GoCorePage />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} /> 
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/go-soul" element={<GoSoulPage />} /> 
         </Routes>
       </AnimatePresence>
     </>
