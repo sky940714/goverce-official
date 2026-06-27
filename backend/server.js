@@ -4,11 +4,21 @@ const cors       = require('cors');
 const crypto     = require('crypto');
 const Anthropic  = require('@anthropic-ai/sdk');
 const nodemailer = require('nodemailer');
+const rateLimit  = require('express-rate-limit');
 require('dotenv').config();
 
 const app = express();
 app.use(express.json({ limit: '10mb' }));
 app.use(cors());
+
+const auditLimiter = rateLimit({
+  windowMs:         24 * 60 * 60 * 1000,
+  max:              5,
+  standardHeaders:  true,
+  legacyHeaders:    false,
+  keyGenerator:     (req) => req.headers['x-real-ip'] || req.socket.remoteAddress,
+  message:          { error: '今日健檢次數已達上限（每天 5 次），請明天再試' },
+});
 
 // ── Database ─────────────────────────────────────────────────
 
@@ -164,17 +174,29 @@ function enrichScores(rawScores) {
 // ── Routes ────────────────────────────────────────────────────
 
 // 執行健檢分析
-app.post('/api/audit/run', async (req, res) => {
+app.post('/api/audit/run', auditLimiter, async (req, res) => {
   const { name, area } = req.body;
   if (!name?.trim() || !area?.trim()) {
     return res.status(400).json({ error: '缺少店名或地區' });
+  }
+  const n = name.trim();
+  const a = area.trim();
+  if (n.length < 2 || n.length > 50) {
+    return res.status(400).json({ error: '店名長度需在 2–50 字之間' });
+  }
+  if (a.length < 2 || a.length > 30) {
+    return res.status(400).json({ error: '地區長度需在 2–30 字之間' });
+  }
+  const hasWord = /[\w一-鿿぀-ヿ]/.test(n) && /[\w一-鿿぀-ヿ]/.test(a);
+  if (!hasWord) {
+    return res.status(400).json({ error: '請輸入有效的店名與地區' });
   }
 
   const { imageBase64, imageMimeType } = req.body;
   const hasScreenshot = !!(imageBase64 && imageMimeType);
 
   try {
-    const textBlock  = { type: 'text', text: buildPrompt(name.trim(), area.trim(), hasScreenshot) };
+    const textBlock  = { type: 'text', text: buildPrompt(n, a, hasScreenshot) };
     const msgContent = hasScreenshot
       ? [{ type: 'image', source: { type: 'base64', media_type: imageMimeType, data: imageBase64 } }, textBlock]
       : textBlock.text;
@@ -185,7 +207,7 @@ app.post('/api/audit/run', async (req, res) => {
       messages:   [{ role: 'user', content: msgContent }],
     });
 
-    logCost(message.usage, name.trim(), area.trim());
+    logCost(message.usage, n, a);
 
     const data   = parseClaudeJSON(message.content[0].text);
     const scores = enrichScores(data.scores);
@@ -195,12 +217,12 @@ app.post('/api/audit/run', async (req, res) => {
     await db.execute(
       `INSERT INTO audit_reports (slug, business_name, area, total_score, scores_json, actions_json)
        VALUES (?, ?, ?, ?, ?, ?)`,
-      [slug, name.trim(), area.trim(), total, JSON.stringify(scores), JSON.stringify(data.actions)]
+      [slug, n, a, total, JSON.stringify(scores), JSON.stringify(data.actions)]
     );
 
     res.json({
       slug,
-      business: { name: name.trim(), area: area.trim() },
+      business: { name: n, area: a },
       scores,
       total,
       actions: data.actions,
@@ -267,7 +289,13 @@ app.get('/api/audit/:slug', async (req, res) => {
 });
 
 // 業務後台：所有 leads 清單
-app.get('/api/admin/leads', async (req, res) => {
+app.get('/api/admin/leads', (req, res, next) => {
+  const key = req.headers['x-admin-key'] || req.query.key;
+  if (!process.env.ADMIN_KEY || key !== process.env.ADMIN_KEY) {
+    return res.status(401).json({ error: '未授權' });
+  }
+  next();
+}, async (req, res) => {
   try {
     const [rows] = await db.execute(`
       SELECT l.id, l.email, l.phone, l.callback_time, l.is_called, l.created_at,

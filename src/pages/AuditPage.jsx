@@ -49,6 +49,11 @@ const InputStep = ({ onNext }) => {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
+    if (file.size > 5 * 1024 * 1024) {
+      alert('圖片大小不能超過 5MB');
+      e.target.value = '';
+      return;
+    }
     const reader = new FileReader();
     reader.onload = () => {
       setImage({
@@ -227,8 +232,11 @@ const ProcessingStep = ({ business, onComplete }) => {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
       body:    JSON.stringify(body),
-    }).then(r => {
-      if (!r.ok) throw new Error('伺服器錯誤');
+    }).then(async r => {
+      if (!r.ok) {
+        const data = await r.json().catch(() => ({}));
+        throw new Error(data.error || '伺服器錯誤');
+      }
       return r.json();
     });
 
@@ -531,7 +539,7 @@ const AuditPage = () => {
   const [business, setBusiness] = useState(null);
   const [result, setResult]     = useState(null);
 
-  const go = (s) => setStep(s);
+  const go = (s) => { setStep(s); window.scrollTo({ top: 0, behavior: 'smooth' }); };
 
   return (
     <div className="min-h-screen bg-[#F5F5F5] pt-32 pb-24 px-5">
