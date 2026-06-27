@@ -1,0 +1,9 @@
+{
+  "/_not-found/page": "/_not-found",
+  "/api/admin/leads/route": "/api/admin/leads",
+  "/api/audit/lead/route": "/api/audit/lead",
+  "/api/audit/[slug]/route": "/api/audit/[slug]",
+  "/api/audit/run/route": "/api/audit/run",
+  "/ai-audit/page": "/ai-audit",
+  "/page": "/"
+}
