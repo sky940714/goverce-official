@@ -1,26 +1,31 @@
 import './globals.css';
 import Navbar from '@/components/Navbar';
 
+const SITE_TITLE = 'Goverce 創生科技 | 免費 AI 能見度健檢';
+const SITE_DESC  = 'Goverce 創生科技提供免費 AI 能見度健檢工具，30 秒分析你的店在 ChatGPT、Claude、Perplexity 等 AI 搜尋中是否被找到。協助台灣在地商家透過 GEO（生成式搜尋優化）與 SEO 提升數位曝光，銜接專業顧問服務。';
+
 export const metadata = {
-  title: 'Goverce 創生科技 | 連結未來與生活',
-  description: 'Goverce 創生科技提供 AI 自動化工具研發方案，整合 GO EAT 智慧餐飲與 GO PRIME 極致服務系統，致力於商業生態系的跨域整合與自動化經營。',
-  keywords: '創生科技, Goverce, GO EAT, 饗導, 智慧餐飲, AI自動化, 商家轉型',
-  authors: [{ name: 'Goverce Team' }],
+  title: SITE_TITLE,
+  description: SITE_DESC,
+  keywords: 'GEO, 生成式搜尋優化, AI 能見度, SEO, ChatGPT 推薦, 創生科技, Goverce, AI 健檢, 台灣在地商家, Perplexity, Claude 推薦',
+  authors: [{ name: 'Goverce 創生科技' }],
   openGraph: {
     type: 'website',
     url: 'https://www.goverce.com/',
-    title: 'Goverce 創生科技 | 官方網站',
-    description: '告別高額抽成，掌控您的數位店面。專為微型餐飲與在地品牌打造的智慧管理生態。',
+    title: SITE_TITLE,
+    description: SITE_DESC,
     images: [{ url: 'https://www.goverce.com/og-image.jpg' }],
-    siteName: 'Goverce Ecosystem',
+    siteName: 'Goverce 創生科技',
+    locale: 'zh_TW',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Goverce 創生科技',
-    description: 'Connecting Future & Life | 連結未來與生活',
+    title: SITE_TITLE,
+    description: SITE_DESC,
     images: ['https://www.goverce.com/og-image.jpg'],
   },
   robots: { index: true, follow: true },
+  alternates: { canonical: 'https://www.goverce.com/' },
 };
 
 export default function RootLayout({ children }) {
