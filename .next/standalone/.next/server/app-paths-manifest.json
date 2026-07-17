@@ -1,9 +1,0 @@
-{
-  "/api/admin/leads/route": "app/api/admin/leads/route.js",
-  "/api/audit/lead/route": "app/api/audit/lead/route.js",
-  "/api/audit/[slug]/route": "app/api/audit/[slug]/route.js",
-  "/_not-found/page": "app/_not-found/page.js",
-  "/api/audit/run/route": "app/api/audit/run/route.js",
-  "/ai-audit/page": "app/ai-audit/page.js",
-  "/page": "app/page.js"
-}

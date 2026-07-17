@@ -12,7 +12,8 @@ const Navbar = () => {
   const pathname = usePathname();
 
   const isAuditPage = pathname.startsWith('/ai-audit');
-  const forceDark = isAuditPage;
+  const isUberEatsPage = pathname.startsWith('/uber-eats-ads');
+  const forceDark = isAuditPage || isUberEatsPage;
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -49,6 +50,12 @@ const Navbar = () => {
 
         <div className="hidden lg:flex items-center gap-6">
           <Link
+            href="/uber-eats-ads"
+            className="text-white/70 hover:text-white text-sm font-bold transition-colors"
+          >
+            Uber Eats 廣告教學
+          </Link>
+          <Link
             href="/ai-audit"
             className="flex items-center gap-2 bg-[#FF6B00] text-white px-6 py-2.5 rounded-full font-black text-sm tracking-widest hover:bg-[#e85f00] transition-all shadow-lg shadow-[#FF6B00]/20 hover:scale-105 active:scale-95"
           >
@@ -80,6 +87,13 @@ const Navbar = () => {
             >
               <span className="text-5xl font-black italic text-white uppercase tracking-tighter">AI 健檢</span>
               <span className="text-2xl font-bold text-[#FF6B00]">免費</span>
+            </Link>
+            <Link
+              href="/uber-eats-ads"
+              onClick={() => setIsOpen(false)}
+              className="flex items-center justify-between border-b border-white/5 pb-8 pt-8"
+            >
+              <span className="text-3xl font-black italic text-white/80 uppercase tracking-tighter">Uber Eats 廣告教學</span>
             </Link>
           </motion.div>
         )}
