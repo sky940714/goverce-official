@@ -24,7 +24,7 @@ const fadeInUp = {
 
 const INPUT_CLS = 'w-full bg-gray-50 border border-gray-200 rounded-2xl px-5 py-4 text-[#1A1A1A] font-bold placeholder-gray-400 focus:outline-none focus:border-[#FF6B00]/70 focus:ring-2 focus:ring-[#FF6B00]/10 transition-all';
 
-const PRICE = 10; // TODO: 測試完成後改回 200
+const PRICE = 200;
 
 const PERSONAS = [
   { Icon: AlertTriangle, title: '廣告一直開，訂單卻掛零',   desc: '搞不清楚「廣告」跟「行銷」到底差在哪，錢花了卻看不到成效' },

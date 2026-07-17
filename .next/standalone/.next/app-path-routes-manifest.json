@@ -1,0 +1,15 @@
+{
+  "/_not-found/page": "/_not-found",
+  "/api/admin/leads/route": "/api/admin/leads",
+  "/api/checkout/create/route": "/api/checkout/create",
+  "/api/audit/[slug]/route": "/api/audit/[slug]",
+  "/api/checkout/notify/route": "/api/checkout/notify",
+  "/api/admin/orders/route": "/api/admin/orders",
+  "/api/checkout/status/route": "/api/checkout/status",
+  "/api/audit/run/route": "/api/audit/run",
+  "/api/audit/lead/route": "/api/audit/lead",
+  "/page": "/",
+  "/ai-audit/page": "/ai-audit",
+  "/uber-eats-ads/success/page": "/uber-eats-ads/success",
+  "/uber-eats-ads/page": "/uber-eats-ads"
+}
