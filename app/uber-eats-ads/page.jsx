@@ -24,33 +24,33 @@ const fadeInUp = {
 
 const INPUT_CLS = 'w-full bg-gray-50 border border-gray-200 rounded-2xl px-5 py-4 text-[#1A1A1A] font-bold placeholder-gray-400 focus:outline-none focus:border-[#FF6B00]/70 focus:ring-2 focus:ring-[#FF6B00]/10 transition-all';
 
-const PRICE = 200;
+const PRICE = 10; // TODO: 測試完成後改回 200
 
 const PERSONAS = [
-  { Icon: Rocket,        title: '剛上架 Uber Eats 的新手商家', desc: '不知道從何開始下廣告，怕預算亂花卻沒有訂單' },
-  { Icon: AlertTriangle, title: '廣告一直燒錢卻沒有訂單',       desc: '已經有在投廣告，但轉換率低、不知道問題出在哪' },
-  { Icon: BarChart2,     title: '想要系統化操作的老闆',         desc: '不想再憑感覺亂試，想學會看數據調整廣告策略' },
+  { Icon: AlertTriangle, title: '廣告一直開，訂單卻掛零',   desc: '搞不清楚「廣告」跟「行銷」到底差在哪，錢花了卻看不到成效' },
+  { Icon: Rocket,        title: '完全不懂後台在哪裡點',     desc: '後台密密麻麻，不知道優惠、廣告要從哪裡開始設定' },
+  { Icon: BarChart2,     title: '想先小額測試市場水溫',     desc: '不想貿然砸大錢，只想先用 600 元的預算測試看看有沒有效' },
 ];
 
 const OUTLINE = [
-  { step: '01', title: '受眾與預算設定',   desc: '搞懂 Uber Eats 廣告後台，設定精準受眾與合理預算配置' },
-  { step: '02', title: '廣告素材優化',     desc: '菜單照片、標題文案怎麼寫才會讓人想點進來下單' },
-  { step: '03', title: '數據判讀與調整',   desc: '看懂曝光、點擊、轉換率，知道什麼時候該加碼、什麼時候該停損' },
-  { step: '04', title: '常見錯誤與避坑指南', desc: '新手最常踩的雷，一次幫你整理起來，少走冤枉路' },
+  { step: '01', title: '廣告 vs 行銷的本質差異', desc: '搞懂「花錢買眼球」跟「進店後促銷」的差別，少走 95% 冤枉路' },
+  { step: '02', title: '兩個爆單優惠公式',       desc: '買 1 送 1 該怎麼挑品項、訂單折抵門檻怎麼設才不會弄巧成拙' },
+  { step: '03', title: '10 分鐘照抄設定 SOP',    desc: '優惠啟動 + 廣告開啟，每一步都照著畫面截圖操作就會' },
+  { step: '04', title: '門面優化 + 進階玩法',    desc: '主打照片、品名怎麼改最吸睛，加碼 Happy Hour、滿額贈等進階應用' },
 ];
 
 const BENEFITS = [
-  { Icon: Target,     title: '精準受眾設定',     desc: '教你怎麼設定 Uber Eats 廣告受眾，把預算花在真正會下單的顧客身上' },
-  { Icon: TrendingUp, title: '提高曝光排名',     desc: '掌握平台演算法邏輯，讓你的店在搜尋與推薦列表中排到更前面' },
-  { Icon: Rocket,     title: '廣告投放實戰步驟', desc: '從零開始，一步步設定第一檔廣告活動，不用懂行銷也能上手' },
-  { Icon: Users,      title: '同業實戰案例參考', desc: '參考其他商家怎麼調整廣告策略，少走冤枉路' },
+  { Icon: Target,     title: '看懂廣告與行銷的差別',     desc: '花錢買眼球（廣告）跟進店後的促銷招式（行銷）要分開看，才知道錢花在哪裡最有效' },
+  { Icon: TrendingUp, title: '兩個公式衝評論、衝訂單',   desc: '剛開幕沒單用「買 1 送 1」刷分數，想拉高客單價用「訂單折抵優惠」讓客人加購' },
+  { Icon: Rocket,     title: '10 分鐘後台實際設定',     desc: '照著步驟在優惠、廣告後台親手點過一次，600 元預算怎麼配置一次學會' },
+  { Icon: Users,      title: '進階場景應用技巧',         desc: '下午沒單怎麼救、快過期食材怎麼清庫存，實際情境都有對應的解法' },
 ];
 
 const FAQS = [
-  { q: '這份 PDF 適合完全沒有行銷經驗的人嗎？', a: '適合。內容以實際操作步驟為主，不需要行銷背景，跟著步驟做就能上手。' },
+  { q: '這份 PDF 真的 10 分鐘就能學會嗎？', a: '內容本來就是設計成「照抄作業」的操作步驟，跟著畫面截圖一步步點就好，不需要先懂行銷理論。' },
   { q: '付款後多久可以收到 PDF？', a: '完成付款後系統會立即自動寄送，通常幾秒到一分鐘內就會收到信件，請記得檢查垃圾郵件匣。' },
   { q: '可以開立收據或發票嗎？', a: '如需要收據，付款完成後歡迎直接回覆通知信與我們聯繫。' },
-  { q: '內容會不會太簡單或太籠統？', a: '內容聚焦在 Uber Eats 廣告投放的具體操作與判讀方式，附有實際步驟說明，而不是空泛的行銷概念。' },
+  { q: '內容會不會太簡單或太籠統？', a: '內容聚焦在 Uber Eats 廣告與優惠設定的具體操作，附有實際範例（例如客單價門檻怎麼算），而不是空泛的行銷概念。' },
 ];
 
 const HeroSection = ({ onBuy }) => (
@@ -73,13 +73,15 @@ const HeroSection = ({ onBuy }) => (
       </div>
 
       <h1 className="text-5xl md:text-7xl font-black tracking-tighter leading-tight text-white mb-8">
-        別再花冤枉錢下廣告<br />
-        <span className="text-[#FF6B00]">用對方法讓訂單變多</span>
+        為什麼我的廣告<br />
+        <span className="text-[#FF6B00]">卻沒訂單？</span>
       </h1>
 
-      <p className="text-lg md:text-xl text-white/70 font-medium leading-relaxed mb-12 max-w-2xl mx-auto">
-        一份專為 Uber Eats 商家寫的行銷下廣告實戰指南（PDF），
-        不用懂行銷理論，跟著步驟操作就能開始優化你的廣告成效。
+      <p className="text-lg md:text-xl text-white/70 font-medium leading-relaxed mb-4 max-w-2xl mx-auto">
+        10 分鐘極速設定，用 Uber Eats 的 <span className="text-[#FF6B00] font-black">600 元放大術</span> 砸出爆量訂單
+      </p>
+      <p className="text-base text-white/50 font-medium leading-relaxed mb-12 max-w-2xl mx-auto">
+        不用懂行銷理論，跟著步驟照抄就能開始優化你的廣告成效
       </p>
 
       <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -87,7 +89,7 @@ const HeroSection = ({ onBuy }) => (
           onClick={onBuy}
           className="bg-[#FF6B00] text-white px-10 py-5 rounded-2xl font-black text-lg flex items-center justify-center gap-3 hover:bg-[#e85f00] transition-all shadow-2xl shadow-[#FF6B00]/30 hover:-translate-y-1 active:scale-[0.98]"
         >
-          立即購買 NT$ {PRICE} <ArrowRight size={20} />
+          立即學習 NT$ {PRICE} <ArrowRight size={20} />
         </button>
       </div>
     </div>
@@ -130,7 +132,7 @@ const PersonaSection = () => (
   </section>
 );
 
-const OutlineSection = () => (
+const OutlineSection = ({ onNext }) => (
   <section className="py-24 md:py-32 bg-[#F5F5F5]">
     <div className="max-w-6xl mx-auto px-8">
       <motion.div {...fadeInUp} className="text-center mb-16">
@@ -144,14 +146,34 @@ const OutlineSection = () => (
       </motion.div>
 
       <div className="grid md:grid-cols-2 gap-10 items-center">
-        <motion.div {...fadeInUp} className="relative mx-auto md:mx-0 w-full max-w-sm aspect-[5/7] rounded-3xl overflow-hidden shadow-2xl border border-gray-200 bg-white">
-          <Image
-            src="/uber-eats-pdf-cover.jpg"
-            alt="Uber Eats 商家行銷下廣告指南 PDF 封面預覽"
-            fill
-            sizes="(max-width: 768px) 90vw, 400px"
-            className="object-cover"
-          />
+        <motion.div {...fadeInUp} className="flex flex-col gap-4 w-full max-w-md mx-auto md:mx-0">
+          <div className="relative w-full aspect-video rounded-2xl overflow-hidden shadow-xl border border-gray-200 bg-white">
+            <Image
+              src="/uber-eats-pdf-preview-1.jpg"
+              alt="Uber Eats 商家行銷下廣告指南 PDF 第一頁預覽"
+              fill
+              sizes="(max-width: 768px) 90vw, 480px"
+              className="object-contain"
+            />
+          </div>
+
+          <div className="relative w-full aspect-video rounded-2xl overflow-hidden shadow-xl border border-gray-200 bg-white">
+            <Image
+              src="/uber-eats-pdf-preview-2-blur.jpg"
+              alt="Uber Eats 商家行銷下廣告指南 PDF 第二頁預覽"
+              fill
+              sizes="(max-width: 768px) 90vw, 480px"
+              className="object-contain"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent flex items-end p-3">
+              <button
+                onClick={onNext}
+                className="w-full bg-[#FF6B00] text-white py-2.5 rounded-xl font-black text-xs flex items-center justify-center gap-1.5 hover:bg-[#e85f00] transition-all active:scale-[0.98] shadow-lg shadow-[#FF6B00]/30"
+              >
+                立馬學更多 <ArrowRight size={13} />
+              </button>
+            </div>
+          </div>
         </motion.div>
 
         <div className="space-y-5">
@@ -242,7 +264,7 @@ const IntroStep = ({ onNext }) => (
   <motion.div {...PAGE}>
     <HeroSection onBuy={onNext} />
     <PersonaSection />
-    <OutlineSection />
+    <OutlineSection onNext={onNext} />
     <BenefitsSection />
     <FaqSection />
     <PricingSection />

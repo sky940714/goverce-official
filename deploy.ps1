@@ -54,7 +54,9 @@ $tmpFile = "$env:TEMP\goverce_deploy.sh"
 $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
 [System.IO.File]::WriteAllText($tmpFile, $remoteScript, $utf8NoBom)
 
-$bashTmpPath = ($tmpFile -replace '\\', '/') -replace '^([A-Z]):', { '/'+$_.Value[0].ToString().ToLower() }
+$normalizedPath = $tmpFile -replace '\\', '/'
+$driveLetter = $normalizedPath.Substring(0,1).ToLower()
+$bashTmpPath = "/$driveLetter" + $normalizedPath.Substring(2)
 
 & $BASH -c "ssh $SERVER bash < '$bashTmpPath'"
 
